@@ -3,15 +3,15 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from .elf import ELF
-    from .orc import ORC
+    from name_generator.cultures.elf import ELF
+    from name_generator.cultures.orc import ORC
 
 
 __all__ = ('ELF', 'ORC')
 
 _LAZY_IMPORTS = {
-    'ELF': 'app.core.name_generator.culture.elf',
-    'ORC': 'app.core.name_generator.culture.orc',
+    'ELF': 'name_generator.culture.elf',
+    'ORC': 'name_generator.culture.orc',
 }
 
 
