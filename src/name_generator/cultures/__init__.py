@@ -5,13 +5,15 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from name_generator.cultures.elf import ELF
     from name_generator.cultures.orc import ORC
+    from name_generator.cultures.human import HUMAN
 
 
-__all__ = ('ELF', 'ORC')
+__all__ = ('ELF', 'ORC', 'HUMAN')
 
 _LAZY_IMPORTS = {
-    'ELF': 'name_generator.culture.elf',
-    'ORC': 'name_generator.culture.orc',
+    'ELF': 'name_generator.cultures.elf',
+    'ORC': 'name_generator.cultures.orc',
+    'HUMAN': 'name_generator.cultures.human'
 }
 
 

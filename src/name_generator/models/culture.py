@@ -1,19 +1,19 @@
 from dataclasses import dataclass
-from name_generator.models import NameProfile
+from name_generator.models.name_profile import NameProfile
+from name_generator.models.gender import Gender
 
 
 @dataclass
 class Culture:
     id: str
-    name: str
+    title: str
 
-    male_names: NameProfile
-    female_names: NameProfile
+    names: Gender[NameProfile]
 
-    family_names: NameProfile
+    surnames: NameProfile
 
-    city_names: NameProfile
-    country_names: NameProfile
+    cities: NameProfile
+    countries: NameProfile
 
-    dynasty_names: NameProfile | None = None
-    clan_names: NameProfile | None = None
+    dynastyes: NameProfile | None = None
+    clans: NameProfile | None = None

@@ -1,10 +1,11 @@
-from name_generator import NameGenerator
-from name_generator.cultures import ELF
+from name_generator import CultureNameGenerator
+from name_generator.cultures import HUMAN
+
 
 def main():
-    g = NameGenerator(ELF)
-    for _ in range(10):
-        print(g.get_persone_name())
+    g = CultureNameGenerator(HUMAN)
+    for _ in range(30):
+        print(g.get_name(unique=True))
 
 
 if __name__ == "__main__":
