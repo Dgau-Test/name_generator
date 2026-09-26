@@ -1,6 +1,5 @@
 from name_generator.models.name_profile import NameProfile, WeightedValue
 
-
 ELF_CITY = NameProfile(
     consonants=[
         WeightedValue("л", 25),

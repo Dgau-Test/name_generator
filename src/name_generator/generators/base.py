@@ -4,15 +4,6 @@ from name_generator.models import NameProfile, WeightedValue
 
 
 class NameGenerator:
-    SYMBOL_PATTERN_TO_PART = {
-        'C': 'consonants',
-        'V': 'vowels',
-        'K': 'onset_clusters',
-        'D': 'coda_clusters',
-        'S': 'start_syllables',
-        'M': 'middle_syllables',
-        'E': 'end_syllables'
-    }
     VOWELS = set('аеёиоуыэюя')
 
     def weighted_choice(self, items: list[WeightedValue]) -> str:
@@ -22,7 +13,6 @@ class NameGenerator:
         return random.choices(
             population=[item.value for item in items],
             weights=[item.weight for item in items],
-            k=1
         )[0]
 
     def _maybe_add_apostrophe(self, name: str, profile: NameProfile) -> str:
@@ -79,13 +69,18 @@ class NameGenerator:
             return False
         return True
 
+    def _build(self, profile: NameProfile) -> str:
+        '''Построение наименования по шаблону.'''
+        pattern = self.weighted_choice(profile.patterns)
+
+        return ''.join([
+            self.weighted_choice(profile.get_part(s))
+            for s in pattern
+        ])
+
     def generate(self, profile: NameProfile) -> str:
         for _ in range(500):
-            pattern = self.weighted_choice(profile.patterns)
-            name = ''.join([
-                self.weighted_choice(getattr(profile, self.SYMBOL_PATTERN_TO_PART[s]))
-                for s in pattern
-            ])
+            name = self._build(profile)
             name = self._apply_replacements(name, profile)
             name = self._maybe_add_apostrophe(name, profile).capitalize()
 

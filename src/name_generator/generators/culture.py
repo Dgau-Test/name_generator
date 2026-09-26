@@ -30,7 +30,7 @@ class CultureNameGenerator(NameGenerator):
             return name
         raise RuntimeError('Не удалось сгенерировать наименование')
 
-    def get_name(self, sex: bool = 1, unique: bool = False) -> str:
+    def get_name(self, sex: bool = True, unique: bool = False) -> str:
         '''Сгенерировать имя.'''
         gender = 'male' if sex else 'female'
         return self._generate(

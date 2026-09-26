@@ -9,9 +9,6 @@ __all__ = ('ORC',)
 
 
 ORC = Culture(
-    id="orc",
-    title="Орки",
-
     names=Gender(
         ORC_MALE, ORC_FEMALE
     ),

@@ -9,9 +9,6 @@ __all__ = ('ELF',)
 
 
 ELF = Culture(
-    id="elf",
-    title="Эльфы",
-
     names=Gender(
         ELF_MALE, ELF_FEMALE
     ),

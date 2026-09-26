@@ -9,9 +9,6 @@ __all__ = ('HUMAN',)
 
 
 HUMAN = Culture(
-    id="HUMAN",
-    title="Люди",
-
     names=Gender(
         HUMAN_MALE, HUMAN_FEMALE
     ),
