@@ -1,7 +1,7 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-ORC_CITY = NameProfile(
+ORC_CITY = RussianNameProfile(
     consonants=[
         WeightedValue("г", 30),
         WeightedValue("к", 27),
@@ -11,6 +11,8 @@ ORC_CITY = NameProfile(
         WeightedValue("м", 10),
         WeightedValue("н", 12),
         WeightedValue("х", 8),
+        WeightedValue("б", 8),
+        WeightedValue("з", 6),
     ],
 
     vowels=[
@@ -27,6 +29,9 @@ ORC_CITY = NameProfile(
         WeightedValue("тр", 12),
         WeightedValue("хр", 8),
         WeightedValue("згр", 4),
+        WeightedValue("бр", 7),
+        WeightedValue("гн", 6),
+        WeightedValue("кх", 5),
     ],
 
     coda_clusters=[
@@ -35,6 +40,9 @@ ORC_CITY = NameProfile(
         WeightedValue("нд", 12),
         WeightedValue("нг", 12),
         WeightedValue("рт", 10),
+        WeightedValue("гд", 7),
+        WeightedValue("кт", 6),
+        WeightedValue("рх", 5),
     ],
 
     start_syllables=[
@@ -47,6 +55,14 @@ ORC_CITY = NameProfile(
         WeightedValue("Торг", 12),
         WeightedValue("Хар", 9),
         WeightedValue("Грум", 8),
+
+        WeightedValue("Браг", 9),
+        WeightedValue("Гром", 8),
+        WeightedValue("Кхар", 8),
+        WeightedValue("Драг", 9),
+        WeightedValue("Нарг", 8),
+        WeightedValue("Зуг", 7),
+        WeightedValue("Крум", 7),
     ],
 
     middle_syllables=[
@@ -57,23 +73,44 @@ ORC_CITY = NameProfile(
         WeightedValue("тар", 10),
         WeightedValue("мар", 8),
         WeightedValue("ур", 10),
+
+        WeightedValue("гур", 10),
+        WeightedValue("кар", 9),
+        WeightedValue("дог", 8),
+        WeightedValue("раг", 10),
+        WeightedValue("кру", 6),
+        WeightedValue("нар", 7),
     ],
 
     end_syllables=[
-        WeightedValue("град", 14),
-        WeightedValue("гар", 15),
-        WeightedValue("дор", 15),
-        WeightedValue("рак", 12),
+        # Явно городские / крепостные окончания
+        WeightedValue("град", 12),
+        WeightedValue("гар", 13),
+        WeightedValue("дор", 12),
+        WeightedValue("рак", 11),
         WeightedValue("дур", 10),
         WeightedValue("гор", 10),
         WeightedValue("тар", 8),
-        WeightedValue("кхар", 5),
+        WeightedValue("кхар", 6),
+
+        # Более тяжёлые орочьи топонимы
+        WeightedValue("гарт", 8),
+        WeightedValue("бург", 4),
+        WeightedValue("рок", 8),
+        WeightedValue("грум", 6),
+        WeightedValue("раг", 8),
+        WeightedValue("круг", 5),
+        WeightedValue("дар", 7),
     ],
 
     patterns=[
-        WeightedValue("SME", 50),
-        WeightedValue("SMME", 30),
-        WeightedValue("SE", 20),
+        WeightedValue("SE", 30),
+        WeightedValue("SME", 45),
+        WeightedValue("SMME", 15),
+
+        # Более грубые процедурные формы
+        WeightedValue("KVDE", 5),
+        WeightedValue("KVCDE", 5),
     ],
 
     min_length=5,
@@ -82,10 +119,25 @@ ORC_CITY = NameProfile(
     max_consonants_in_row=3,
     max_vowels_in_row=1,
 
+    forbidden_combinations=[
+        "аа",
+        "оо",
+        "уу",
+        "ыы",
+        "ррр",
+        "ггг",
+        "ккк",
+    ],
+
     replacement_rules={
         "аа": "а",
         "оо": "о",
         "уу": "у",
+        "ыы": "ы",
         "рр": "р",
+        "ггг": "гг",
+        "ккк": "кк",
     },
+
+    apostrophe_chance=0.02,
 )

@@ -1,7 +1,7 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-HUMAN_SURNAME = NameProfile(
+HUMAN_SURNAME = RussianNameProfile(
     consonants=[
         WeightedValue("б", 7),
         WeightedValue("в", 15),
@@ -13,6 +13,9 @@ HUMAN_SURNAME = NameProfile(
         WeightedValue("р", 26),
         WeightedValue("с", 18),
         WeightedValue("т", 16),
+        WeightedValue("г", 8),
+        WeightedValue("п", 6),
+        WeightedValue("з", 5),
     ],
 
     vowels=[
@@ -29,6 +32,9 @@ HUMAN_SURNAME = NameProfile(
         WeightedValue("кр", 8),
         WeightedValue("ст", 10),
         WeightedValue("тр", 7),
+        WeightedValue("гр", 6),
+        WeightedValue("пр", 5),
+        WeightedValue("ск", 5),
     ],
 
     coda_clusters=[
@@ -37,10 +43,12 @@ HUMAN_SURNAME = NameProfile(
         WeightedValue("ль", 10),
         WeightedValue("ст", 10),
         WeightedValue("н", 14),
+        WeightedValue("рт", 6),
+        WeightedValue("ск", 5),
     ],
 
     start_syllables=[
-        WeightedValue("Арден", 10),
+        WeightedValue("Арден", 8),
         WeightedValue("Бел", 12),
         WeightedValue("Вар", 12),
         WeightedValue("Дор", 11),
@@ -51,6 +59,17 @@ HUMAN_SURNAME = NameProfile(
         WeightedValue("Сар", 10),
         WeightedValue("Тер", 10),
         WeightedValue("Вел", 10),
+
+        WeightedValue("Бран", 9),
+        WeightedValue("Гар", 8),
+        WeightedValue("Дал", 8),
+        WeightedValue("Кар", 9),
+        WeightedValue("Нор", 9),
+        WeightedValue("Рав", 7),
+        WeightedValue("Бер", 8),
+        WeightedValue("Мор", 8),
+        WeightedValue("Стен", 6),
+        WeightedValue("Тор", 7),
     ],
 
     middle_syllables=[
@@ -60,36 +79,77 @@ HUMAN_SURNAME = NameProfile(
         WeightedValue("ел", 12),
         WeightedValue("ин", 10),
         WeightedValue("ер", 10),
+
+        WeightedValue("ов", 12),
+        WeightedValue("ев", 8),
+        WeightedValue("ан", 10),
+        WeightedValue("ол", 7),
+        WeightedValue("ир", 7),
+        WeightedValue("енс", 5),
     ],
 
     end_syllables=[
-        WeightedValue("ар", 14),
-        WeightedValue("ен", 15),
-        WeightedValue("ер", 13),
-        WeightedValue("ор", 12),
-        WeightedValue("ин", 12),
-        WeightedValue("ель", 8),
-        WeightedValue("ан", 12),
-        WeightedValue("ард", 7),
+        # Нейтральные фамильные окончания
+        WeightedValue("ар", 10),
+        WeightedValue("ен", 10),
+        WeightedValue("ер", 10),
+        WeightedValue("ор", 9),
+        WeightedValue("ин", 11),
+        WeightedValue("ель", 7),
+        WeightedValue("ан", 9),
+        WeightedValue("ард", 6),
+
+        # Более явно фамильные формы
+        WeightedValue("ов", 12),
+        WeightedValue("ев", 9),
+        WeightedValue("ин", 8),
+        WeightedValue("сен", 7),
+        WeightedValue("сон", 6),
+        WeightedValue("ман", 7),
+        WeightedValue("берг", 5),
+        WeightedValue("дорф", 4),
+        WeightedValue("ский", 5),
     ],
 
     patterns=[
         WeightedValue("SE", 55),
         WeightedValue("SME", 35),
-        WeightedValue("SMME", 10),
+        WeightedValue("SMME", 5),
+
+        # Небольшая доля процедурных фамилий
+        WeightedValue("CVCE", 3),
+        WeightedValue("KVCE", 2),
     ],
 
-    min_length=5,
-    max_length=14,
+    min_length=4,
+    max_length=15,
 
-    max_consonants_in_row=2,
+    max_consonants_in_row=3,
     max_vowels_in_row=2,
+
+    forbidden_combinations=[
+        "ааа",
+        "еее",
+        "иии",
+        "ооо",
+        "ууу",
+        "ррр",
+        "ннн",
+        "ллл",
+        "ттт",
+    ],
 
     replacement_rules={
         "аа": "а",
         "ее": "е",
         "ии": "и",
         "оо": "о",
+        "уу": "у",
         "рр": "р",
+        "ннн": "нн",
+        "ллл": "лл",
+        "ттт": "тт",
     },
+
+    apostrophe_chance=0.002,
 )

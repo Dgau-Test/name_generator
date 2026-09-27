@@ -1,7 +1,7 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-HUMAN_MALE = NameProfile(
+HUMAN_MALE = RussianNameProfile(
     consonants=[
         WeightedValue("б", 8),
         WeightedValue("в", 14),
@@ -17,6 +17,7 @@ HUMAN_MALE = NameProfile(
         WeightedValue("ф", 4),
         WeightedValue("х", 3),
         WeightedValue("з", 7),
+        WeightedValue("п", 6),
     ],
 
     vowels=[
@@ -34,7 +35,8 @@ HUMAN_MALE = NameProfile(
         WeightedValue("тр", 10),
         WeightedValue("гр", 5),
         WeightedValue("ст", 10),
-        WeightedValue("вар", 4),
+        WeightedValue("пр", 6),
+        WeightedValue("ск", 5),
     ],
 
     coda_clusters=[
@@ -45,6 +47,8 @@ HUMAN_MALE = NameProfile(
         WeightedValue("ль", 10),
         WeightedValue("н", 20),
         WeightedValue("р", 20),
+        WeightedValue("рд", 6),
+        WeightedValue("лд", 4),
     ],
 
     start_syllables=[
@@ -62,40 +66,63 @@ HUMAN_MALE = NameProfile(
         WeightedValue("Эд", 8),
         WeightedValue("Эр", 12),
         WeightedValue("Вел", 8),
+
+        WeightedValue("Бран", 8),
+        WeightedValue("Гар", 8),
+        WeightedValue("Дел", 7),
+        WeightedValue("Кор", 8),
+        WeightedValue("Нор", 9),
+        WeightedValue("Рад", 7),
+        WeightedValue("Тор", 7),
+        WeightedValue("Фер", 5),
     ],
 
     middle_syllables=[
-        WeightedValue("ан", 20),
-        WeightedValue("ар", 18),
+        WeightedValue("ан", 17),
+        WeightedValue("ар", 15),
         WeightedValue("ен", 15),
         WeightedValue("ер", 13),
         WeightedValue("ил", 12),
         WeightedValue("ор", 12),
-        WeightedValue("ин", 15),
+        WeightedValue("ин", 14),
         WeightedValue("ел", 10),
         WeightedValue("ри", 10),
         WeightedValue("да", 5),
+
+        WeightedValue("ал", 9),
+        WeightedValue("он", 8),
+        WeightedValue("ра", 7),
+        WeightedValue("ми", 6),
+        WeightedValue("тер", 5),
+        WeightedValue("вин", 5),
     ],
 
     end_syllables=[
-        WeightedValue("ан", 22),
-        WeightedValue("ар", 18),
-        WeightedValue("ен", 18),
-        WeightedValue("ер", 15),
-        WeightedValue("ин", 16),
-        WeightedValue("ор", 13),
+        WeightedValue("ан", 18),
+        WeightedValue("ар", 15),
+        WeightedValue("ен", 16),
+        WeightedValue("ер", 13),
+        WeightedValue("ин", 15),
+        WeightedValue("ор", 12),
         WeightedValue("ель", 8),
         WeightedValue("ис", 7),
         WeightedValue("он", 10),
         WeightedValue("ир", 10),
+
+        WeightedValue("ий", 7),
+        WeightedValue("ас", 6),
+        WeightedValue("ус", 5),
+        WeightedValue("ард", 6),
+        WeightedValue("ерт", 5),
     ],
 
     patterns=[
-        WeightedValue("SE", 28),
-        WeightedValue("SME", 38),
-        WeightedValue("SMME", 8),
-        WeightedValue("CVCVC", 12),
-        WeightedValue("KVC", 7),
+        WeightedValue("SE", 32),
+        WeightedValue("SME", 40),
+        WeightedValue("SMME", 6),
+
+        WeightedValue("CVCVC", 9),
+        WeightedValue("KVC", 6),
         WeightedValue("CVCE", 7),
     ],
 
@@ -110,10 +137,15 @@ HUMAN_MALE = NameProfile(
         "еее",
         "иии",
         "ооо",
+        "ууу",
         "кг",
         "гк",
         "тд",
         "дт",
+        "бп",
+        "пб",
+        "ррр",
+        "ннн",
     ],
 
     replacement_rules={
@@ -121,15 +153,17 @@ HUMAN_MALE = NameProfile(
         "ее": "е",
         "ии": "и",
         "оо": "о",
+        "уу": "у",
         "рр": "р",
         "ннн": "нн",
+        "ллл": "лл",
     },
 
-    apostrophe_chance=0.002,
+    apostrophe_chance=0.0,
 )
 
 
-HUMAN_FEMALE = NameProfile(
+HUMAN_FEMALE = RussianNameProfile(
     consonants=[
         WeightedValue("в", 12),
         WeightedValue("д", 8),
@@ -141,6 +175,7 @@ HUMAN_FEMALE = NameProfile(
         WeightedValue("с", 18),
         WeightedValue("т", 14),
         WeightedValue("з", 7),
+        WeightedValue("б", 5),
     ],
 
     vowels=[
@@ -157,12 +192,16 @@ HUMAN_FEMALE = NameProfile(
         WeightedValue("др", 5),
         WeightedValue("ст", 8),
         WeightedValue("тр", 4),
+        WeightedValue("сл", 7),
+        WeightedValue("кр", 3),
     ],
 
     coda_clusters=[
         WeightedValue("ль", 12),
         WeightedValue("н", 20),
         WeightedValue("р", 12),
+        WeightedValue("ст", 5),
+        WeightedValue("нд", 4),
     ],
 
     start_syllables=[
@@ -178,6 +217,15 @@ HUMAN_FEMALE = NameProfile(
         WeightedValue("Лора", 12),
         WeightedValue("Нари", 10),
         WeightedValue("Те", 7),
+
+        WeightedValue("Адел", 8),
+        WeightedValue("Вал", 7),
+        WeightedValue("Ири", 9),
+        WeightedValue("Кари", 8),
+        WeightedValue("Мела", 7),
+        WeightedValue("Рена", 8),
+        WeightedValue("Сера", 8),
+        WeightedValue("Эра", 6),
     ],
 
     middle_syllables=[
@@ -189,25 +237,38 @@ HUMAN_FEMALE = NameProfile(
         WeightedValue("си", 8),
         WeightedValue("да", 8),
         WeightedValue("э", 5),
+
+        WeightedValue("не", 9),
+        WeightedValue("ра", 12),
+        WeightedValue("ви", 6),
+        WeightedValue("ел", 7),
+        WeightedValue("ана", 5),
     ],
 
     end_syllables=[
-        WeightedValue("а", 25),
-        WeightedValue("ия", 18),
-        WeightedValue("ина", 18),
-        WeightedValue("ира", 17),
-        WeightedValue("ела", 12),
-        WeightedValue("эна", 10),
-        WeightedValue("ана", 14),
+        WeightedValue("а", 22),
+        WeightedValue("ия", 16),
+        WeightedValue("ина", 16),
+        WeightedValue("ира", 15),
+        WeightedValue("ела", 11),
+        WeightedValue("эна", 9),
+        WeightedValue("ана", 13),
         WeightedValue("ис", 5),
+
+        WeightedValue("ена", 10),
+        WeightedValue("ара", 10),
+        WeightedValue("ора", 7),
+        WeightedValue("ель", 6),
+        WeightedValue("ея", 6),
     ],
 
     patterns=[
-        WeightedValue("SE", 30),
-        WeightedValue("SME", 45),
-        WeightedValue("SMME", 10),
-        WeightedValue("CVCVCV", 10),
-        WeightedValue("CVCE", 5),
+        WeightedValue("SE", 34),
+        WeightedValue("SME", 44),
+        WeightedValue("SMME", 7),
+
+        WeightedValue("CVCVCV", 9),
+        WeightedValue("CVCE", 6),
     ],
 
     min_length=4,
@@ -220,8 +281,13 @@ HUMAN_FEMALE = NameProfile(
         "ааа",
         "еее",
         "иии",
+        "ооо",
         "кг",
         "гк",
+        "тд",
+        "дт",
+        "ррр",
+        "ннн",
     ],
 
     replacement_rules={
@@ -230,6 +296,8 @@ HUMAN_FEMALE = NameProfile(
         "ии": "и",
         "оо": "о",
         "рр": "р",
+        "ннн": "нн",
+        "ллл": "лл",
     },
 
     apostrophe_chance=0.0,

@@ -1,7 +1,12 @@
+from collections.abc import Callable
+
 import pytest
 
 from name_generator import CultureNameGenerator, NameGenerator
 from name_generator.models import Culture, NameProfile
+from name_generator.name_profiles import RussianNameProfile
+
+ProfileFactory = Callable[..., NameProfile]
 
 
 @pytest.fixture
@@ -10,7 +15,7 @@ def generator() -> NameGenerator:
 
 
 @pytest.fixture
-def make_profile():
+def make_profile() -> ProfileFactory:
     def _make_profile(**kwargs) -> NameProfile:
         defaults = {
             "min_length": 1,
@@ -20,7 +25,7 @@ def make_profile():
             "apostrophe_chance": 0.0,
         }
 
-        return NameProfile(**(defaults | kwargs))
+        return RussianNameProfile(**(defaults | kwargs))
 
     return _make_profile
 

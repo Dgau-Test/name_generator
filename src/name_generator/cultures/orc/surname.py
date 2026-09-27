@@ -1,7 +1,8 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
 
-ORC_SURNAME = NameProfile(
+ORC_SURNAME = RussianNameProfile(
     consonants=[
         WeightedValue("г", 28),
         WeightedValue("к", 25),
@@ -12,6 +13,8 @@ ORC_SURNAME = NameProfile(
         WeightedValue("н", 10),
         WeightedValue("х", 10),
         WeightedValue("з", 6),
+        WeightedValue("б", 7),
+        WeightedValue("ш", 5),
     ],
 
     vowels=[
@@ -27,6 +30,9 @@ ORC_SURNAME = NameProfile(
         WeightedValue("др", 18),
         WeightedValue("тр", 12),
         WeightedValue("хр", 10),
+        WeightedValue("бр", 8),
+        WeightedValue("згр", 4),
+        WeightedValue("кх", 5),
     ],
 
     coda_clusters=[
@@ -35,6 +41,9 @@ ORC_SURNAME = NameProfile(
         WeightedValue("нд", 10),
         WeightedValue("нг", 12),
         WeightedValue("рд", 8),
+        WeightedValue("рт", 8),
+        WeightedValue("кт", 6),
+        WeightedValue("рх", 6),
     ],
 
     start_syllables=[
@@ -47,6 +56,14 @@ ORC_SURNAME = NameProfile(
         WeightedValue("Хар", 9),
         WeightedValue("Кор", 10),
         WeightedValue("Гар", 12),
+
+        WeightedValue("Браг", 10),
+        WeightedValue("Нарг", 10),
+        WeightedValue("Зуг", 8),
+        WeightedValue("Кхар", 8),
+        WeightedValue("Грак", 10),
+        WeightedValue("Торг", 9),
+        WeightedValue("Драк", 8),
     ],
 
     middle_syllables=[
@@ -56,34 +73,79 @@ ORC_SURNAME = NameProfile(
         WeightedValue("гор", 12),
         WeightedValue("нар", 8),
         WeightedValue("тур", 8),
+
+        WeightedValue("гур", 10),
+        WeightedValue("раг", 11),
+        WeightedValue("кар", 9),
+        WeightedValue("хар", 8),
+        WeightedValue("дог", 6),
+        WeightedValue("рук", 6),
     ],
 
     end_syllables=[
-        WeightedValue("гар", 18),
-        WeightedValue("рак", 18),
-        WeightedValue("дур", 15),
-        WeightedValue("гор", 13),
+        # Родовые окончания
+        WeightedValue("гар", 14),
+        WeightedValue("рак", 14),
+        WeightedValue("дур", 12),
+        WeightedValue("гор", 10),
         WeightedValue("кхар", 7),
-        WeightedValue("мар", 9),
-        WeightedValue("тар", 10),
+        WeightedValue("мар", 7),
+        WeightedValue("тар", 8),
+
+        # Более тяжёлые клановые формы
+        WeightedValue("ург", 10),
+        WeightedValue("арк", 10),
+        WeightedValue("орг", 9),
+        WeightedValue("гарк", 7),
+        WeightedValue("драк", 7),
+        WeightedValue("руг", 7),
+        WeightedValue("круг", 5),
+        WeightedValue("горт", 6),
+        WeightedValue("храг", 5),
     ],
 
     patterns=[
+        # Короткие родовые имена
         WeightedValue("SE", 45),
-        WeightedValue("SME", 45),
-        WeightedValue("SMME", 10),
+
+        # Основной формат клановой фамилии
+        WeightedValue("SME", 35),
+
+        # Длинные древние родовые формы
+        WeightedValue("SMME", 8),
+
+        # Грубые процедурные варианты
+        WeightedValue("KVCE", 5),
+        WeightedValue("KVCDE", 4),
+        WeightedValue("CVCD", 3),
     ],
 
-    min_length=5,
+    min_length=4,
     max_length=14,
 
     max_consonants_in_row=3,
     max_vowels_in_row=1,
 
+    forbidden_combinations=[
+        "аа",
+        "оо",
+        "уу",
+        "ыы",
+        "ррр",
+        "ггг",
+        "ккк",
+        "хх",
+    ],
+
     replacement_rules={
         "аа": "а",
         "оо": "о",
         "уу": "у",
+        "ыы": "ы",
         "рр": "р",
+        "ггг": "гг",
+        "ккк": "кк",
     },
+
+    apostrophe_chance=0.035,
 )

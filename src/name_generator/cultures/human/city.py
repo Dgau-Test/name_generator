@@ -1,7 +1,7 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-HUMAN_CITY = NameProfile(
+HUMAN_CITY = RussianNameProfile(
     consonants=[
         WeightedValue("б", 8),
         WeightedValue("в", 14),
@@ -14,6 +14,8 @@ HUMAN_CITY = NameProfile(
         WeightedValue("с", 16),
         WeightedValue("т", 18),
         WeightedValue("г", 9),
+        WeightedValue("п", 7),
+        WeightedValue("з", 6),
     ],
 
     vowels=[
@@ -31,6 +33,9 @@ HUMAN_CITY = NameProfile(
         WeightedValue("гр", 8),
         WeightedValue("ст", 10),
         WeightedValue("тр", 8),
+        WeightedValue("пр", 7),
+        WeightedValue("ск", 7),
+        WeightedValue("кл", 5),
     ],
 
     coda_clusters=[
@@ -38,6 +43,9 @@ HUMAN_CITY = NameProfile(
         WeightedValue("рн", 8),
         WeightedValue("ст", 10),
         WeightedValue("нд", 8),
+        WeightedValue("рт", 7),
+        WeightedValue("ль", 6),
+        WeightedValue("ск", 6),
     ],
 
     start_syllables=[
@@ -52,6 +60,15 @@ HUMAN_CITY = NameProfile(
         WeightedValue("Стар", 7),
         WeightedValue("Тар", 10),
         WeightedValue("Вел", 12),
+
+        WeightedValue("Бран", 9),
+        WeightedValue("Гар", 9),
+        WeightedValue("Крон", 7),
+        WeightedValue("Нор", 10),
+        WeightedValue("Ост", 7),
+        WeightedValue("Рав", 8),
+        WeightedValue("Бер", 9),
+        WeightedValue("Дал", 8),
     ],
 
     middle_syllables=[
@@ -62,25 +79,44 @@ HUMAN_CITY = NameProfile(
         WeightedValue("ин", 8),
         WeightedValue("да", 8),
         WeightedValue("ер", 10),
+
+        WeightedValue("ов", 10),
+        WeightedValue("ан", 9),
+        WeightedValue("ев", 7),
+        WeightedValue("ол", 7),
+        WeightedValue("ра", 6),
+        WeightedValue("бург", 3),
     ],
 
     end_syllables=[
-        WeightedValue("град", 8),
-        WeightedValue("дор", 12),
+        # Явно городские окончания
+        WeightedValue("град", 10),
+        WeightedValue("дор", 10),
         WeightedValue("форт", 5),
-        WeightedValue("ар", 12),
-        WeightedValue("ен", 12),
-        WeightedValue("он", 12),
-        WeightedValue("ель", 8),
-        WeightedValue("ор", 12),
+        WeightedValue("бург", 8),
+        WeightedValue("ск", 8),
+        WeightedValue("ово", 7),
+        WeightedValue("ино", 6),
+
+        # Нейтральные топонимические окончания
+        WeightedValue("ар", 9),
+        WeightedValue("ен", 10),
+        WeightedValue("он", 10),
+        WeightedValue("ель", 7),
+        WeightedValue("ор", 10),
         WeightedValue("ин", 8),
+        WeightedValue("ан", 7),
+        WeightedValue("ов", 8),
     ],
 
     patterns=[
-        WeightedValue("SE", 25),
-        WeightedValue("SME", 50),
-        WeightedValue("SMME", 20),
+        WeightedValue("SE", 35),
+        WeightedValue("SME", 45),
+        WeightedValue("SMME", 12),
+
+        # Полностью процедурные формы
         WeightedValue("CVCE", 5),
+        WeightedValue("KVCE", 3),
     ],
 
     min_length=5,
@@ -89,11 +125,29 @@ HUMAN_CITY = NameProfile(
     max_consonants_in_row=3,
     max_vowels_in_row=2,
 
+    forbidden_combinations=[
+        "ааа",
+        "еее",
+        "иии",
+        "ооо",
+        "ууу",
+        "ррр",
+        "ннн",
+        "ллл",
+        "ттт",
+    ],
+
     replacement_rules={
         "аа": "а",
         "ее": "е",
         "ии": "и",
         "оо": "о",
+        "уу": "у",
         "рр": "р",
+        "ннн": "нн",
+        "ллл": "лл",
+        "ттт": "тт",
     },
+
+    apostrophe_chance=0.0,
 )

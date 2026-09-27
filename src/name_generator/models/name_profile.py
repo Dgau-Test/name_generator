@@ -1,19 +1,14 @@
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-
-@dataclass(frozen=True)
-class WeightedValue:
-    value: str
-    weight: float = 1.0
-
-    def __post_init__(self) -> None:
-        if self.weight <= 0:
-            raise ValueError("weight должен быть > 0")
+from name_generator.models.alphabet import Alphabet
+from name_generator.models.weighted_value import WeightedValue
 
 
 @dataclass
 class NameProfile:
+    alphabet: Alphabet
+
     # одиночные согласные
     # 'к', 'р', 'т', 'м', 'н',
     consonants: list[WeightedValue] = field(default_factory=list)
@@ -35,10 +30,6 @@ class NameProfile:
     middle_syllables: list[WeightedValue] = field(default_factory=list)
     # окончания
     end_syllables: list[WeightedValue] = field(default_factory=list)
-
-    prefixes: list[WeightedValue] = field(default_factory=list)
-    suffixes: list[WeightedValue] = field(default_factory=list)
-
 
     # C = обычная согласная
     # V = гласная
@@ -88,6 +79,8 @@ class NameProfile:
     }
 
     def __post_init__(self) -> None:
+        self._validate_characters()
+        self._validate_clusters()
         self._validate_lengths()
         self._validate_limits()
         self._validate_patterns()
@@ -131,3 +124,37 @@ class NameProfile:
                         f'{part_name!r} не может быть пустым: '
                         f'он используется в шаблоне {pattern!r}'
                     )
+
+    def _validate_characters(self) -> None:
+        for item in self.vowels:
+            if any(char not in self.alphabet.vowels for char in item.value.lower()):
+                raise ValueError(
+                    f'Значение {item.value!r} в vowels содержит негласные символы'
+                )
+
+        for item in self.consonants:
+            if any(char not in self.alphabet.consonants for char in item.value.lower()):
+                raise ValueError(
+                    f'Значение {item.value!r} в consonants содержит несогласные символы'
+                )
+
+    def _validate_clusters(self) -> None:
+        allowed = self.alphabet.consonants | self.alphabet.modifiers
+        clusters = self.onset_clusters + self.coda_clusters
+        for item in clusters:
+            value = item.value.lower()
+
+            if any(char not in allowed for char in value):
+                raise ValueError(
+                    f'Кластер {item.value!r} содержит '
+                    'недопустимый символ'
+                )
+
+            if not any(
+                char in self.alphabet.consonants
+                for char in value
+            ):
+                raise ValueError(
+                    f'Кластер {item.value!r} должен содержать '
+                    'хотя бы одну согласную'
+                )

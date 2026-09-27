@@ -1,66 +1,120 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-ELF_MALE = NameProfile(
+ELF_MALE = RussianNameProfile(
     consonants=[
         WeightedValue("л", 30),
         WeightedValue("р", 25),
         WeightedValue("н", 20),
         WeightedValue("с", 10),
-        WeightedValue("в", 5),
-        WeightedValue("м", 5),
+        WeightedValue("в", 6),
+        WeightedValue("м", 6),
+        WeightedValue("т", 5),
     ],
 
     vowels=[
         WeightedValue("а", 20),
-        WeightedValue("э", 20),
+        WeightedValue("э", 18),
         WeightedValue("и", 25),
         WeightedValue("е", 15),
-        WeightedValue("о", 5),
+        WeightedValue("о", 7),
+    ],
+
+    onset_clusters=[
+        WeightedValue("тр", 8),
+        WeightedValue("сл", 6),
+    ],
+
+    coda_clusters=[
+        WeightedValue("ль", 10),
+        WeightedValue("рн", 5),
     ],
 
     start_syllables=[
-        WeightedValue("Эл", 25),
-        WeightedValue("Ли", 20),
+        WeightedValue("Эл", 22),
+        WeightedValue("Ли", 18),
         WeightedValue("Аэ", 12),
-        WeightedValue("Ил", 15),
-        WeightedValue("Та", 10),
-        WeightedValue("Са", 10),
+        WeightedValue("Ил", 14),
+        WeightedValue("Та", 9),
+        WeightedValue("Са", 9),
+
+        WeightedValue("Эри", 9),
+        WeightedValue("Лаэ", 7),
+        WeightedValue("Нэ", 7),
+        WeightedValue("Ари", 8),
+        WeightedValue("Си", 6),
+        WeightedValue("Ваэ", 4),
     ],
 
     middle_syllables=[
-        WeightedValue("ри", 20),
-        WeightedValue("ли", 20),
-        WeightedValue("ра", 15),
+        WeightedValue("ри", 18),
+        WeightedValue("ли", 17),
+        WeightedValue("ра", 14),
         WeightedValue("ни", 10),
         WeightedValue("э", 5),
+
+        WeightedValue("ла", 10),
+        WeightedValue("ре", 8),
+        WeightedValue("но", 6),
+        WeightedValue("си", 6),
+        WeightedValue("ви", 5),
+        WeightedValue("эль", 4),
     ],
 
     end_syllables=[
-        WeightedValue("ион", 25),
-        WeightedValue("ир", 25),
+        WeightedValue("ион", 18),
+        WeightedValue("ир", 22),
         WeightedValue("ор", 10),
-        WeightedValue("ан", 20),
+        WeightedValue("ан", 18),
         WeightedValue("ис", 10),
+
+        WeightedValue("эль", 8),
+        WeightedValue("ар", 12),
+        WeightedValue("ен", 8),
+        WeightedValue("иан", 8),
+        WeightedValue("орин", 5),
+        WeightedValue("аэль", 4),
     ],
 
     patterns=[
-        WeightedValue("SME", 50),
-        WeightedValue("SE", 30),
-        WeightedValue("SMME", 10),
+        WeightedValue("SE", 35),
+        WeightedValue("SME", 45),
+        WeightedValue("SMME", 8),
+
+        # Редкие полностью процедурные формы.
+        WeightedValue("CVCVE", 5),
+        WeightedValue("KVCE", 2),
     ],
 
     min_length=4,
-    max_length=12,
+    max_length=13,
+
+    max_consonants_in_row=2,
+    max_vowels_in_row=2,
+
+    forbidden_combinations=[
+        "ааа",
+        "иии",
+        "эээ",
+        "ллл",
+        "ррр",
+        "ннн",
+    ],
 
     replacement_rules={
         "ии": "и",
         "ээ": "э",
         "аа": "а",
-    }
+        "ллл": "лл",
+        "ррр": "рр",
+        "ннн": "нн",
+    },
+
+    apostrophe_chance=0.015,
 )
 
-ELF_FEMALE = NameProfile(
+
+ELF_FEMALE = RussianNameProfile(
     consonants=[
         WeightedValue("л", 30),
         WeightedValue("р", 20),
@@ -68,51 +122,103 @@ ELF_FEMALE = NameProfile(
         WeightedValue("с", 15),
         WeightedValue("в", 5),
         WeightedValue("м", 10),
+        WeightedValue("т", 4),
     ],
 
     vowels=[
         WeightedValue("а", 30),
-        WeightedValue("э", 20),
+        WeightedValue("э", 18),
         WeightedValue("и", 25),
         WeightedValue("е", 15),
+        WeightedValue("о", 4),
+    ],
+
+    onset_clusters=[
+        WeightedValue("сл", 7),
+    ],
+
+    coda_clusters=[
+        WeightedValue("ль", 12),
     ],
 
     start_syllables=[
-        WeightedValue("Эл", 20),
-        WeightedValue("Ли", 25),
-        WeightedValue("Аэ", 20),
-        WeightedValue("Ил", 10),
-        WeightedValue("Са", 15),
+        WeightedValue("Эл", 18),
+        WeightedValue("Ли", 22),
+        WeightedValue("Аэ", 18),
+        WeightedValue("Ил", 9),
+        WeightedValue("Са", 13),
+
+        WeightedValue("Эли", 12),
+        WeightedValue("Лаэ", 9),
+        WeightedValue("Нэ", 8),
+        WeightedValue("Ми", 8),
+        WeightedValue("Ари", 8),
+        WeightedValue("Сиэ", 5),
     ],
 
     middle_syllables=[
-        WeightedValue("ри", 15),
-        WeightedValue("ли", 25),
-        WeightedValue("на", 20),
-        WeightedValue("ра", 15),
-        WeightedValue("э", 10),
+        WeightedValue("ри", 14),
+        WeightedValue("ли", 22),
+        WeightedValue("на", 18),
+        WeightedValue("ра", 14),
+        WeightedValue("э", 8),
+
+        WeightedValue("ла", 14),
+        WeightedValue("ми", 8),
+        WeightedValue("ни", 10),
+        WeightedValue("си", 6),
+        WeightedValue("ари", 7),
+        WeightedValue("эли", 5),
     ],
 
     end_syllables=[
-        WeightedValue("иэль", 20),
-        WeightedValue("ара", 20),
-        WeightedValue("ина", 20),
-        WeightedValue("эль", 15),
-        WeightedValue("ира", 20),
+        WeightedValue("иэль", 18),
+        WeightedValue("ара", 17),
+        WeightedValue("ина", 17),
+        WeightedValue("эль", 14),
+        WeightedValue("ира", 17),
+
+        WeightedValue("иэль", 8),
+        WeightedValue("ана", 10),
+        WeightedValue("эла", 9),
+        WeightedValue("лия", 10),
+        WeightedValue("иара", 5),
+        WeightedValue("эри", 5),
     ],
 
     patterns=[
-        WeightedValue("SME", 60),
-        WeightedValue("SE", 25),
-        WeightedValue("SMME", 15),
+        WeightedValue("SE", 30),
+        WeightedValue("SME", 50),
+        WeightedValue("SMME", 12),
+
+        # Небольшая доля менее шаблонных имён.
+        WeightedValue("CVCVE", 5),
+        WeightedValue("SVE", 3),
     ],
 
     min_length=4,
-    max_length=13,
+    max_length=14,
+
+    max_consonants_in_row=2,
+    max_vowels_in_row=2,
+
+    forbidden_combinations=[
+        "ааа",
+        "иии",
+        "эээ",
+        "ллл",
+        "ррр",
+        "ннн",
+    ],
 
     replacement_rules={
         "ии": "и",
         "ээ": "э",
         "аа": "а",
-    }
+        "ллл": "лл",
+        "ррр": "рр",
+        "ннн": "нн",
+    },
+
+    apostrophe_chance=0.015,
 )

@@ -1,10 +1,12 @@
 import random
+from collections import defaultdict
 
 from name_generator.models import NameProfile, WeightedValue
 
 
 class NameGenerator:
-    VOWELS = set('аеёиоуыэюя')
+    def __init__(self):
+        self._exist_names = defaultdict(set)
 
     def weighted_choice(self, items: list[WeightedValue]) -> str:
         if not items:
@@ -30,7 +32,7 @@ class NameGenerator:
         consonants_in_row = 0
 
         for char in name.lower():
-            if char in self.VOWELS:
+            if char in profile.alphabet.vowels:
                 consonants_in_row = 0
                 continue
 
@@ -76,17 +78,28 @@ class NameGenerator:
         return ''.join([
             self.weighted_choice(profile.get_part(s))
             for s in pattern
-        ])
+        ]).lower()
 
-    def generate(self, profile: NameProfile) -> str:
+    def generate(
+        self,
+        profile: NameProfile,
+        unique: bool = False,
+        exist_key: str = 'names'
+    ) -> str:
         for _ in range(500):
             name = self._build(profile)
             name = self._apply_replacements(name, profile)
-            name = self._maybe_add_apostrophe(name, profile).capitalize()
+            name = self._maybe_add_apostrophe(name, profile)
+            name = name.capitalize()
 
             if not self._valid(name, profile):
                 continue
 
+            if unique:
+                if name in self._exist_names[exist_key]:
+                    continue
+                self._exist_names[exist_key].add(name)
+
             return name
 
-        raise RuntimeError('Не удалось сгенерировать имя')
+        raise RuntimeError('Не удалось сгенерировать наименование')

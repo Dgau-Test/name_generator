@@ -1,7 +1,7 @@
-from name_generator.models.name_profile import NameProfile, WeightedValue
+from name_generator.models.name_profile import WeightedValue
+from name_generator.name_profiles import RussianNameProfile
 
-
-ORC_MALE = NameProfile(
+ORC_MALE = RussianNameProfile(
     consonants=[
         WeightedValue("г", 30),
         WeightedValue("к", 28),
@@ -30,9 +30,11 @@ ORC_MALE = NameProfile(
         WeightedValue("др", 18),
         WeightedValue("тр", 15),
         WeightedValue("бр", 10),
+        WeightedValue("хр", 8),
         WeightedValue("згр", 4),
         WeightedValue("скр", 3),
-        WeightedValue("хр", 8),
+        WeightedValue("гн", 5),
+        WeightedValue("кх", 4),
     ],
 
     coda_clusters=[
@@ -43,6 +45,8 @@ ORC_MALE = NameProfile(
         WeightedValue("нд", 8),
         WeightedValue("кт", 6),
         WeightedValue("рд", 10),
+        WeightedValue("гд", 5),
+        WeightedValue("рх", 5),
     ],
 
     start_syllables=[
@@ -60,6 +64,13 @@ ORC_MALE = NameProfile(
         WeightedValue("Бра", 8),
         WeightedValue("Зар", 7),
         WeightedValue("Хар", 9),
+
+        WeightedValue("Нарг", 8),
+        WeightedValue("Грак", 9),
+        WeightedValue("Кхар", 7),
+        WeightedValue("Бруг", 6),
+        WeightedValue("Зуг", 7),
+        WeightedValue("Руг", 8),
     ],
 
     middle_syllables=[
@@ -73,6 +84,12 @@ ORC_MALE = NameProfile(
         WeightedValue("мор", 5),
         WeightedValue("та", 10),
         WeightedValue("ур", 12),
+
+        WeightedValue("гу", 10),
+        WeightedValue("кра", 8),
+        WeightedValue("раг", 8),
+        WeightedValue("дог", 6),
+        WeightedValue("хар", 6),
     ],
 
     end_syllables=[
@@ -86,15 +103,29 @@ ORC_MALE = NameProfile(
         WeightedValue("дур", 10),
         WeightedValue("рак", 12),
         WeightedValue("рг", 6),
+
+        WeightedValue("ог", 12),
+        WeightedValue("ок", 10),
+        WeightedValue("ург", 8),
+        WeightedValue("орк", 8),
+        WeightedValue("арт", 7),
+        WeightedValue("гарк", 5),
     ],
 
     patterns=[
+        # Короткие составные имена
         WeightedValue("SE", 25),
-        WeightedValue("SME", 30),
-        WeightedValue("KVC", 20),
-        WeightedValue("CVCD", 12),
+        WeightedValue("SME", 25),
+
+        # Грубые полностью процедурные формы
+        WeightedValue("KVC", 18),
         WeightedValue("CVC", 8),
-        WeightedValue("KVCD", 5),
+        WeightedValue("CVCD", 9),
+        WeightedValue("KVCD", 8),
+
+        # Немного более длинных вариантов
+        WeightedValue("KVCVC", 5),
+        WeightedValue("CVCE", 2),
     ],
 
     min_length=3,
@@ -104,29 +135,32 @@ ORC_MALE = NameProfile(
     max_vowels_in_row=1,
 
     forbidden_combinations=[
-        "ааа",
-        "ооо",
-        "ууу",
+        "аа",
+        "оо",
+        "уу",
+        "ыы",
         "ии",
-        "э",
-        "ю",
-        "я",
+        "ррр",
+        "ггг",
+        "ккк",
+        "хх",
     ],
 
     replacement_rules={
         "аа": "а",
         "оо": "о",
         "уу": "у",
+        "ыы": "ы",
         "рр": "р",
         "ггг": "гг",
         "ккк": "кк",
     },
 
-    apostrophe_chance=0.025,
+    apostrophe_chance=0.06,
 )
 
 
-ORC_FEMALE = NameProfile(
+ORC_FEMALE = RussianNameProfile(
     consonants=[
         WeightedValue("г", 22),
         WeightedValue("к", 20),
@@ -138,6 +172,7 @@ ORC_FEMALE = NameProfile(
         WeightedValue("з", 8),
         WeightedValue("ш", 7),
         WeightedValue("х", 5),
+        WeightedValue("б", 5),
     ],
 
     vowels=[
@@ -155,6 +190,7 @@ ORC_FEMALE = NameProfile(
         WeightedValue("тр", 8),
         WeightedValue("бр", 7),
         WeightedValue("хр", 5),
+        WeightedValue("гн", 4),
     ],
 
     coda_clusters=[
@@ -162,6 +198,7 @@ ORC_FEMALE = NameProfile(
         WeightedValue("рк", 10),
         WeightedValue("нд", 8),
         WeightedValue("нг", 8),
+        WeightedValue("рт", 5),
     ],
 
     start_syllables=[
@@ -175,6 +212,14 @@ ORC_FEMALE = NameProfile(
         WeightedValue("Тура", 10),
         WeightedValue("Хара", 7),
         WeightedValue("Нара", 8),
+
+        WeightedValue("Гру", 8),
+        WeightedValue("Кару", 8),
+        WeightedValue("Мура", 10),
+        WeightedValue("Рага", 8),
+        WeightedValue("Бара", 6),
+        WeightedValue("Дуга", 6),
+        WeightedValue("Зура", 7),
     ],
 
     middle_syllables=[
@@ -185,24 +230,42 @@ ORC_FEMALE = NameProfile(
         WeightedValue("ка", 12),
         WeightedValue("ру", 10),
         WeightedValue("да", 8),
+
+        WeightedValue("гу", 8),
+        WeightedValue("та", 9),
+        WeightedValue("за", 6),
+        WeightedValue("ша", 6),
+        WeightedValue("ну", 6),
+        WeightedValue("ри", 5),
     ],
 
     end_syllables=[
-        WeightedValue("га", 18),
-        WeightedValue("ра", 20),
-        WeightedValue("на", 20),
-        WeightedValue("ка", 14),
+        WeightedValue("га", 16),
+        WeightedValue("ра", 17),
+        WeightedValue("на", 17),
+        WeightedValue("ка", 13),
         WeightedValue("ша", 9),
         WeightedValue("ма", 10),
         WeightedValue("ура", 8),
+
+        WeightedValue("да", 8),
+        WeightedValue("та", 8),
+        WeightedValue("ара", 7),
+        WeightedValue("уга", 7),
+        WeightedValue("ина", 5),
+        WeightedValue("ора", 5),
     ],
 
     patterns=[
-        WeightedValue("SE", 30),
-        WeightedValue("SME", 45),
-        WeightedValue("SMME", 12),
+        WeightedValue("SE", 32),
+        WeightedValue("SME", 38),
+        WeightedValue("SMME", 8),
+
+        # Процедурные имена
         WeightedValue("CVCVCV", 8),
-        WeightedValue("KVCV", 5),
+        WeightedValue("KVCV", 7),
+        WeightedValue("CVCVE", 4),
+        WeightedValue("KVCE", 3),
     ],
 
     min_length=4,
@@ -212,19 +275,24 @@ ORC_FEMALE = NameProfile(
     max_vowels_in_row=1,
 
     forbidden_combinations=[
-        "ааа",
-        "ооо",
-        "ууу",
-        "э",
-        "ю",
+        "аа",
+        "оо",
+        "уу",
+        "ыы",
+        "ии",
+        "ррр",
+        "ггг",
+        "ккк",
     ],
 
     replacement_rules={
         "аа": "а",
         "оо": "о",
         "уу": "у",
+        "ыы": "ы",
+        "ии": "и",
         "рр": "р",
     },
 
-    apostrophe_chance=0.01,
+    apostrophe_chance=0.04,
 )
