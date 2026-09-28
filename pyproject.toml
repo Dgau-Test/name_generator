@@ -12,7 +12,7 @@ authors = [
 ]
 
 [project.urls]
-Repository = "https://github.com/Dgau-glitch/name_generator"
+Repository = "https://github.com/Dgau-Test/name_generator"
 
 [build-system]
 requires = ["hatchling"]

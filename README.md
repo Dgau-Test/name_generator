@@ -50,13 +50,13 @@
 На текущем этапе библиотеку можно установить непосредственно из репозитория:
 
 ```bash
-uv add git+https://github.com/Dgau-glitch/name_generator.git
+uv add git+https://github.com/Dgau-Test/name_generator.git
 ```
 
 Для локальной разработки:
 
 ```bash
-git clone https://github.com/Dgau-glitch/name_generator.git
+git clone https://github.com/Dgau-Test/name_generator.git
 cd name_generator
 
 uv sync
@@ -408,4 +408,4 @@ uv run flake8 .
 
 ## Автор
 
-Артем Вакуленко — [Dgau-glitch](https://github.com/Dgau-glitch)
+Артем Вакуленко — [Dgau-Test](https://github.com/Dgau-Test)
