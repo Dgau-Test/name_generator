@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class WeightedValue:
+    """Хранит значение и его вес для взвешенного случайного выбора."""
+
     value: str
     weight: float = 1.0
 

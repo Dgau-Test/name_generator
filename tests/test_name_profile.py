@@ -1,6 +1,6 @@
 import pytest
-from conftest import ProfileFactory
 
+from conftest import ProfileFactory
 from name_generator.models import WeightedValue
 
 
@@ -17,9 +17,7 @@ from name_generator.models import WeightedValue
     ],
 )
 def test_get_part(
-    symbol: str,
-    attribute: str,
-    make_profile: ProfileFactory
+    symbol: str, attribute: str, make_profile: ProfileFactory
 ) -> None:
     profile = make_profile()
 
@@ -76,7 +74,7 @@ def test_invalid_limits_raise(
         )
 
 
-@pytest.mark.parametrize("chance", [0.0, 1.0])
+@pytest.mark.parametrize('chance', [0.0, 1.0])
 def test_apostrophe_chance_boundaries_are_valid(
     make_profile: ProfileFactory,
     chance: float,
@@ -89,32 +87,47 @@ def test_apostrophe_chance_boundaries_are_valid(
 def test_accepts_valid_vowels(make_profile: ProfileFactory) -> None:
     profile = make_profile(
         vowels=[
-            WeightedValue("а"),
-            WeightedValue("ае"),
+            WeightedValue('а'),
+            WeightedValue('ае'),
         ],
     )
 
     assert len(profile.vowels) == 2
 
 
-def test_rejects_non_vowel_in_vowels(make_profile: ProfileFactory) -> None:
+@pytest.mark.parametrize(
+    ('field_name', 'value'),
+    [
+        ('vowels', 'аб'),
+        ('consonants', 'ка'),
+        ('onset_clusters', 'ка'),
+        ('coda_clusters', 'ка'),
+    ],
+)
+def test_rejects_invalid_characters(
+    make_profile: ProfileFactory,
+    field_name: str,
+    value: str,
+) -> None:
     with pytest.raises(
         ValueError,
-        match="содержит негласные символы",
+        match='недопустимый символ',
     ):
         make_profile(
-            vowels=[
-                WeightedValue("аб"),
-            ],
+            **{
+                field_name: [
+                    WeightedValue(value),
+                ],
+            },
         )
 
 
 def test_vowels_validation_is_case_insensitive(
-    make_profile: ProfileFactory
+    make_profile: ProfileFactory,
 ) -> None:
     profile = make_profile(
         vowels=[
-            WeightedValue("АЕ"),
+            WeightedValue('АЕ'),
         ],
     )
 
@@ -124,31 +137,19 @@ def test_vowels_validation_is_case_insensitive(
 def test_accepts_valid_consonants(make_profile: ProfileFactory) -> None:
     profile = make_profile(
         consonants=[
-            WeightedValue("к"),
-            WeightedValue("р"),
+            WeightedValue('к'),
+            WeightedValue('р'),
         ],
     )
 
     assert len(profile.consonants) == 2
 
 
-def test_rejects_vowel_in_consonants(make_profile: ProfileFactory) -> None:
-    with pytest.raises(
-        ValueError,
-        match="содержит несогласные символы",
-    ):
-        make_profile(
-            consonants=[
-                WeightedValue("ка"),
-            ],
-        )
-
-
 @pytest.mark.parametrize(
-    "field_name",
+    'field_name',
     [
-        "onset_clusters",
-        "coda_clusters",
+        'onset_clusters',
+        'coda_clusters',
     ],
 )
 def test_accepts_valid_consonant_clusters(
@@ -158,7 +159,7 @@ def test_accepts_valid_consonant_clusters(
     profile = make_profile(
         **{
             field_name: [
-                WeightedValue("кр"),
+                WeightedValue('кр'),
             ],
         },
     )
@@ -167,10 +168,10 @@ def test_accepts_valid_consonant_clusters(
 
 
 @pytest.mark.parametrize(
-    "field_name",
+    'field_name',
     [
-        "onset_clusters",
-        "coda_clusters",
+        'onset_clusters',
+        'coda_clusters',
     ],
 )
 def test_rejects_cluster_containing_vowel(
@@ -179,12 +180,12 @@ def test_rejects_cluster_containing_vowel(
 ) -> None:
     with pytest.raises(
         ValueError,
-        match='содержит недопустимый символ',
+        match='недопустимый символ',
     ):
         make_profile(
             **{
                 field_name: [
-                    WeightedValue("ка"),
+                    WeightedValue('ка'),
                 ],
             },
         )
@@ -195,11 +196,11 @@ def test_modifier_is_not_treated_as_consonant(
 ) -> None:
     with pytest.raises(
         ValueError,
-        match="должен содержать хотя бы одну согласную",
+        match='должен содержать хотя бы одну согласную',
     ):
         make_profile(
             coda_clusters=[
-                WeightedValue("ь"),
+                WeightedValue('ь'),
             ],
         )
 
@@ -207,41 +208,39 @@ def test_modifier_is_not_treated_as_consonant(
 def test_accepts_valid_pattern(make_profile: ProfileFactory) -> None:
     profile = make_profile(
         consonants=[
-            WeightedValue("к"),
+            WeightedValue('к'),
         ],
         vowels=[
-            WeightedValue("а"),
+            WeightedValue('а'),
         ],
         patterns=[
-            WeightedValue("CVC"),
+            WeightedValue('CVC'),
         ],
     )
 
     assert profile.patterns
 
 
-def test_rejects_unknown_pattern_symbol(
-    make_profile: ProfileFactory
-) -> None:
+def test_rejects_unknown_pattern_symbol(make_profile: ProfileFactory) -> None:
     with pytest.raises(
         ValueError,
         match="Неизвестный символ 'X'",
     ):
         make_profile(
             consonants=[
-                WeightedValue("к"),
+                WeightedValue('к'),
             ],
             vowels=[
-                WeightedValue("а"),
+                WeightedValue('а'),
             ],
             patterns=[
-                WeightedValue("CVX"),
+                WeightedValue('CVX'),
             ],
         )
 
 
 def test_rejects_pattern_using_empty_part(
-    make_profile: ProfileFactory
+    make_profile: ProfileFactory,
 ) -> None:
     with pytest.raises(
         ValueError,
@@ -249,9 +248,9 @@ def test_rejects_pattern_using_empty_part(
     ):
         make_profile(
             consonants=[
-                WeightedValue("к"),
+                WeightedValue('к'),
             ],
             patterns=[
-                WeightedValue("CV"),
+                WeightedValue('CV'),
             ],
         )

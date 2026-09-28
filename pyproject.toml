@@ -17,5 +17,21 @@ packages = ["src/name_generator"]
 
 [dependency-groups]
 dev = [
+    "flake8>=7.4.1",
+    "isort>=9.0.1",
     "pytest>=9.1.1",
+    "ruff>=0.16.9",
 ]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+src_paths = ["src", "tests", "examples"]
+known_first_party = ["name_generator"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "single"
+skip-magic-trailing-comma = false

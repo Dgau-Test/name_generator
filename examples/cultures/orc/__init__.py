@@ -1,3 +1,5 @@
+"""Содержит предопределённую культуру орков."""
+
 from cultures.models import Culture, Gender
 from cultures.orc.city import ORC_CITY
 from cultures.orc.country import ORC_COUNTRY
@@ -8,12 +10,8 @@ __all__ = ('ORC',)
 
 
 ORC = Culture(
-    names=Gender(
-        ORC_MALE, ORC_FEMALE
-    ),
-
+    names=Gender(ORC_MALE, ORC_FEMALE),
     surnames=ORC_SURNAME,
-
     cities=ORC_CITY,
     countries=ORC_COUNTRY,
 )

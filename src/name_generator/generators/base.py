@@ -9,6 +9,17 @@ class NameGenerator:
         self._exist_names = defaultdict(set)
 
     def weighted_choice(self, items: list[WeightedValue]) -> str:
+        """Возвращает случайное значение с учётом заданных весов.
+
+        Args:
+            items: Список значений и соответствующих им весов.
+
+        Returns:
+            Случайно выбранное строковое значение.
+
+        Raises:
+            ValueError: Если список значений пуст.
+        """
         if not items:
             raise ValueError('Список WeightedValue пуст')
 
@@ -18,17 +29,14 @@ class NameGenerator:
         )[0]
 
     def _maybe_add_apostrophe(self, name: str, profile: NameProfile) -> str:
-        '''Возможное добавление апострофа.'''
-        if (
-            random.random() < profile.apostrophe_chance
-            and len(name) >= 5
-        ):
+        """Возможное добавление апострофа."""
+        if random.random() < profile.apostrophe_chance and len(name) >= 5:
             position = random.randint(2, len(name) - 2)
             name = f"{name[:position]}'{name[position:]}"
         return name
 
     def _valid_consonants(self, name: str, profile: NameProfile) -> bool:
-        '''Хорошо ли произносится имя.'''
+        """Хорошо ли произносится имя."""
         consonants_in_row = 0
 
         for char in name.lower():
@@ -44,25 +52,30 @@ class NameGenerator:
         return True
 
     def _apply_replacements(self, name: str, profile: NameProfile) -> str:
-        '''Применение установленных замен.'''
+        """Применение установленных замен."""
         for old, new in profile.replacement_rules.items():
             name = name.replace(old, new)
         return name
 
-    def _has_forbidden_combination(self, name: str, profile: NameProfile) -> bool:
-        '''Содержит ли имя запрещенные комбинации.'''
+    def _has_forbidden_combination(
+        self, name: str, profile: NameProfile
+    ) -> bool:
+        """Содержит ли имя запрещенные комбинации."""
         name = name.lower()
         return any(
-            combo.lower() in name
-            for combo in profile.forbidden_combinations 
+            combo.lower() in name for combo in profile.forbidden_combinations
         )
 
     def _valid_length(self, name: str, profile: NameProfile) -> bool:
-        '''Валидация длины наименования.'''
-        return profile.min_length <= len(name.replace("'", "")) <= profile.max_length
+        """Валидация длины наименования."""
+        return (
+            profile.min_length
+            <= len(name.replace("'", ''))
+            <= profile.max_length
+        )
 
     def _valid(self, name: str, profile: NameProfile) -> bool:
-        '''Полная валидация наименования.'''
+        """Полная валидация наименования."""
         if (
             not self._valid_length(name, profile)
             or not self._valid_consonants(name, profile)
@@ -72,20 +85,31 @@ class NameGenerator:
         return True
 
     def _build(self, profile: NameProfile) -> str:
-        '''Построение наименования по шаблону.'''
+        """Построение наименования по шаблону."""
         pattern = self.weighted_choice(profile.patterns)
 
-        return ''.join([
-            self.weighted_choice(profile.get_part(s))
-            for s in pattern
-        ]).lower()
+        return ''.join(
+            [self.weighted_choice(profile.get_part(s)) for s in pattern]
+        ).lower()
 
     def generate(
         self,
         profile: NameProfile,
+        *,
         unique: bool = False,
-        exist_key: str = 'names'
+        exist_key: str = 'names',
     ) -> str:
+        """ ""Генерирует наименование в соответствии с ограничениями профиля.
+
+        Args:
+            profile: Профиль с правилами и взвешенными частями для генерации.
+            unique: Требовать уникальность сгенерированного наименования.
+            exist_key: Ключ области, в которой отслеживается уникальность.
+
+        Raises:
+            RuntimeError: Если не удалось сгенерировать
+            корректное наименование.
+        """
         for _ in range(500):
             name = self._build(profile)
             name = self._apply_replacements(name, profile)

@@ -7,6 +7,12 @@ from name_generator.models.weighted_value import WeightedValue
 
 @dataclass
 class NameProfile:
+    """Описывает профиль генерации наименований.
+
+    Профиль определяет алфавит, допустимые части наименования,
+    шаблоны генерации, ограничения и правила преобразования.
+    """
+
     alphabet: Alphabet
 
     # одиночные согласные
@@ -58,12 +64,12 @@ class NameProfile:
     apostrophe_chance: float = 0.0
 
     def get_part(self, symbol: str) -> list[WeightedValue]:
-        '''Возвращает часть профиля, соответствующую переданному символу шаблона.'''
+        """Возвращает часть профиля, соответствующую символу шаблона."""
         try:
             part_name = self.SYMBOL_PATTERN_TO_PART[symbol]
         except KeyError:
             raise ValueError(
-                f"Неизвестный символ шаблона: {symbol!r}"
+                f'Неизвестный символ шаблона: {symbol!r}'
             ) from None
 
         return getattr(self, part_name)
@@ -84,15 +90,13 @@ class NameProfile:
         self._validate_lengths()
         self._validate_limits()
         self._validate_patterns()
-        
+
     def _validate_lengths(self) -> None:
         if self.min_length < 1:
             raise ValueError('min_length должен быть >= 1')
 
         if self.max_length < self.min_length:
-            raise ValueError(
-                'max_length не может быть меньше min_length'
-            )
+            raise ValueError('max_length не может быть меньше min_length')
 
     def _validate_limits(self) -> None:
         if self.max_consonants_in_row < 1:
@@ -115,8 +119,7 @@ class NameProfile:
 
                 if part_name is None:
                     raise ValueError(
-                        f'Неизвестный символ {symbol!r} '
-                        f'в шаблоне {pattern!r}'
+                        f'Неизвестный символ {symbol!r} в шаблоне {pattern!r}'
                     )
 
                 if not getattr(self, part_name):
@@ -125,36 +128,44 @@ class NameProfile:
                         f'он используется в шаблоне {pattern!r}'
                     )
 
-    def _validate_characters(self) -> None:
-        for item in self.vowels:
-            if any(char not in self.alphabet.vowels for char in item.value.lower()):
+    def _validate_allowed_characters(
+        self,
+        values: list[WeightedValue],
+        allowed: frozenset[str],
+        value_type: str,
+    ) -> None:
+        for item in values:
+            if any(char not in allowed for char in item.value.lower()):
                 raise ValueError(
-                    f'Значение {item.value!r} в vowels содержит негласные символы'
+                    f'{value_type} {item.value!r} содержит недопустимый символ'
                 )
 
-        for item in self.consonants:
-            if any(char not in self.alphabet.consonants for char in item.value.lower()):
-                raise ValueError(
-                    f'Значение {item.value!r} в consonants содержит несогласные символы'
-                )
+    def _validate_characters(self) -> None:
+        self._validate_allowed_characters(
+            self.vowels,
+            self.alphabet.vowels,
+            'Гласная последовательность',
+        )
+        self._validate_allowed_characters(
+            self.consonants,
+            self.alphabet.consonants,
+            'Согласная последовательность',
+        )
 
     def _validate_clusters(self) -> None:
-        allowed = self.alphabet.consonants | self.alphabet.modifiers
         clusters = self.onset_clusters + self.coda_clusters
+
+        self._validate_allowed_characters(
+            clusters,
+            self.alphabet.consonants | self.alphabet.modifiers,
+            'Кластер',
+        )
+
         for item in clusters:
-            value = item.value.lower()
-
-            if any(char not in allowed for char in value):
-                raise ValueError(
-                    f'Кластер {item.value!r} содержит '
-                    'недопустимый символ'
-                )
-
             if not any(
-                char in self.alphabet.consonants
-                for char in value
+                char in self.alphabet.consonants for char in item.value.lower()
             ):
                 raise ValueError(
-                    f'Кластер {item.value!r} должен содержать '
-                    'хотя бы одну согласную'
+                    f'Кластер {item.value!r} '
+                    'должен содержать хотя бы одну согласную'
                 )

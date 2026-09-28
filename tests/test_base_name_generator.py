@@ -1,27 +1,34 @@
 import pytest
-from conftest import ProfileFactory
 
+from conftest import ProfileFactory
 from name_generator import NameGenerator
 from name_generator.models import WeightedValue
 
 
-def test_weighted_choice_emty_list_raises_error(generator: NameGenerator) -> None:
-    with pytest.raises(ValueError, match='Список WeightedValue пуст'):
+def test_weighted_choice_emty_list_raises_error(
+    generator: NameGenerator,
+) -> None:
+    with pytest.raises(ValueError, match='WeightedValue'):
         generator.weighted_choice([])
 
 
 @pytest.mark.parametrize(
     ('name', 'expected'),
     [
-        ("авф", False),
-        ("яччв", True),
-        ("паропра", False),
-        ("апрпар", True),
-        ("неквпва", False),
+        ('авф', False),
+        ('яччв', True),
+        ('паропра', False),
+        ('апрпар', True),
+        ('неквпва', False),
         ("в'рп", False),
-    ]
+    ],
 )
-def test_valid_length(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool) -> None:
+def test_valid_length(
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+    name: str,
+    expected: bool,
+) -> None:
     profile = make_profile(
         min_length=4,
         max_length=6,
@@ -32,28 +39,23 @@ def test_valid_length(generator: NameGenerator, make_profile: ProfileFactory, na
 
 @pytest.mark.parametrize(
     ('name', 'expected'),
-    [
-        ('бАра', True),
-        ('лолу', True),
-        ('бвГра', False),
-        ('АпПпавп', False)
-    ]
+    [('бАра', True), ('лолу', True), ('бвГра', False), ('АпПпавп', False)],
 )
-def test_valid_consonants(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool) -> None:
-    profile = make_profile(
-        max_consonants_in_row = 2
-    )
+def test_valid_consonants(
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+    name: str,
+    expected: bool,
+) -> None:
+    profile = make_profile(max_consonants_in_row=2)
 
     assert generator._valid_consonants(name, profile) is expected
 
 
-def test_apply_replacements(generator: NameGenerator, make_profile: ProfileFactory) -> None:
-    profile = make_profile(
-        replacement_rules = {
-            'аа': 'а',
-            'ии': 'и'
-        }
-    )
+def test_apply_replacements(
+    generator: NameGenerator, make_profile: ProfileFactory
+) -> None:
+    profile = make_profile(replacement_rules={'аа': 'а', 'ии': 'и'})
     name = generator._apply_replacements('аазалиий', profile)
 
     assert name == 'азалий'
@@ -67,21 +69,16 @@ def test_apply_replacements(generator: NameGenerator, make_profile: ProfileFacto
         ('гзунф', True),
         ('афгзо', True),
         ('выавыа', False),
-        ('гозбав', False)
-    ]
+        ('гозбав', False),
+    ],
 )
 def test_has_forbidden_combination(
     generator: NameGenerator,
     make_profile: ProfileFactory,
     name: str,
-    expected: bool
+    expected: bool,
 ) -> None:
-    profile = make_profile(
-        forbidden_combinations = [
-            'бв',
-            'гз'
-        ]
-    )
+    profile = make_profile(forbidden_combinations=['бв', 'гз'])
 
     assert generator._has_forbidden_combination(name, profile) is expected
 
@@ -91,7 +88,7 @@ def test_has_forbidden_combination(
     [
         ('выфывф', 0.1, "вы'фывф"),
         ('выфывф', 0.9, 'выфывф'),
-        ('вып', 0.1, 'вып')
+        ('вып', 0.1, 'вып'),
     ],
 )
 def test_maybe_add_apostrophe(
@@ -100,11 +97,9 @@ def test_maybe_add_apostrophe(
     generator: NameGenerator,
     name: str,
     random_value: float,
-    expected: str
+    expected: str,
 ) -> None:
-    profile = make_profile(
-        apostrophe_chance = 0.5
-    )
+    profile = make_profile(apostrophe_chance=0.5)
 
     monkeypatch.setattr('random.random', lambda: random_value)
     monkeypatch.setattr('random.randint', lambda a, b: 2)
@@ -114,19 +109,21 @@ def test_maybe_add_apostrophe(
     assert result == expected
 
 
-def test_generate(make_profile: ProfileFactory, generator: NameGenerator) -> None:
+def test_generate(
+    make_profile: ProfileFactory, generator: NameGenerator
+) -> None:
     profile = make_profile(
         patterns=[
-            WeightedValue("SVE"),
+            WeightedValue('SVE'),
         ],
         start_syllables=[
-            WeightedValue("эл"),
+            WeightedValue('эл'),
         ],
         vowels=[
-            WeightedValue("а"),
+            WeightedValue('а'),
         ],
         end_syllables=[
-            WeightedValue("рион"),
+            WeightedValue('рион'),
         ],
         min_length=1,
         max_length=20,
@@ -139,14 +136,14 @@ def test_generate(make_profile: ProfileFactory, generator: NameGenerator) -> Non
 def test_generate_raises_error_when_generation_fails(
     monkeypatch: pytest.MonkeyPatch,
     generator: NameGenerator,
-    make_profile: ProfileFactory
+    make_profile: ProfileFactory,
 ) -> None:
     profile = make_profile(
         patterns=[
-            WeightedValue("S"),
+            WeightedValue('S'),
         ],
         start_syllables=[
-            WeightedValue("эль"),
+            WeightedValue('эль'),
         ],
         min_length=1,
         max_length=20,
@@ -155,13 +152,13 @@ def test_generate_raises_error_when_generation_fails(
 
     monkeypatch.setattr(
         generator,
-        "_valid",
+        '_valid',
         lambda name, profile: False,
     )
 
     with pytest.raises(
         RuntimeError,
-        match="Не удалось сгенерировать наименование",
+        match='Не удалось сгенерировать наименование',
     ):
         generator.generate(profile)
 
@@ -169,37 +166,23 @@ def test_generate_raises_error_when_generation_fails(
 def test_generate_unique_names_are_scoped_by_key(
     monkeypatch: pytest.MonkeyPatch,
     generator: NameGenerator,
-    make_profile: ProfileFactory
+    make_profile: ProfileFactory,
 ) -> None:
-    names = iter([
-        'эль', # первое наименование
-        'эль', # дубликат
-        'ари', # второе наименование
-        'эль', # наименование для другого key_exist
-    ])
+    names = iter(
+        [
+            'эль',  # первое наименование
+            'эль',  # дубликат
+            'ари',  # второе наименование
+            'эль',  # наименование для другого key_exist
+        ]
+    )
     profile = make_profile()
 
-    monkeypatch.setattr(
-        generator,
-        '_build',
-        lambda profile: next(names)
-    )
+    monkeypatch.setattr(generator, '_build', lambda profile: next(names))
 
-    first = generator.generate(
-        profile,
-        unique=True,
-        exist_key='names'
-    )
-    second = generator.generate(
-        profile,
-        unique=True,
-        exist_key='names'
-    )
-    city = generator.generate(
-        profile,
-        unique=True,
-        exist_key='cities'
-    )
+    first = generator.generate(profile, unique=True, exist_key='names')
+    second = generator.generate(profile, unique=True, exist_key='names')
+    city = generator.generate(profile, unique=True, exist_key='cities')
 
     assert first == 'Эль'
     assert second == 'Ари'

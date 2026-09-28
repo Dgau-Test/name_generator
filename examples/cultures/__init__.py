@@ -1,3 +1,5 @@
+"""Предоставляет lazy import к предопределённым культурам."""
+
 from importlib import import_module
 from typing import TYPE_CHECKING
 
@@ -14,11 +16,12 @@ __all__ = ('ELF', 'ORC', 'HUMAN', 'CultureNameGenerator')
 _LAZY_IMPORTS = {
     'ELF': 'cultures.elf',
     'ORC': 'cultures.orc',
-    'HUMAN': 'cultures.human'
+    'HUMAN': 'cultures.human',
 }
 
 
 def __getattr__(name: str):
+    """Лениво импортирует культуру при первом обращении к ней."""
     try:
         module_name = _LAZY_IMPORTS[name]
     except KeyError:
