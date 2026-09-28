@@ -1,5 +1,6 @@
-from name_generator.generators.base import NameGenerator
-from name_generator.models import Culture
+from cultures.models import Culture
+
+from name_generator import NameGenerator
 
 
 class CultureNameGenerator(NameGenerator):

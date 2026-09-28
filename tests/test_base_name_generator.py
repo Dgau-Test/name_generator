@@ -5,7 +5,7 @@ from name_generator import NameGenerator
 from name_generator.models import WeightedValue
 
 
-def test_weighted_choice_emty_list_raises_error(generator: NameGenerator):
+def test_weighted_choice_emty_list_raises_error(generator: NameGenerator) -> None:
     with pytest.raises(ValueError, match='Список WeightedValue пуст'):
         generator.weighted_choice([])
 
@@ -21,7 +21,7 @@ def test_weighted_choice_emty_list_raises_error(generator: NameGenerator):
         ("в'рп", False),
     ]
 )
-def test_valid_length(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool):
+def test_valid_length(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool) -> None:
     profile = make_profile(
         min_length=4,
         max_length=6,
@@ -39,7 +39,7 @@ def test_valid_length(generator: NameGenerator, make_profile: ProfileFactory, na
         ('АпПпавп', False)
     ]
 )
-def test_valid_consonants(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool):
+def test_valid_consonants(generator: NameGenerator, make_profile: ProfileFactory, name: str, expected: bool) -> None:
     profile = make_profile(
         max_consonants_in_row = 2
     )
@@ -47,7 +47,7 @@ def test_valid_consonants(generator: NameGenerator, make_profile: ProfileFactory
     assert generator._valid_consonants(name, profile) is expected
 
 
-def test_apply_replacements(generator: NameGenerator, make_profile: ProfileFactory):
+def test_apply_replacements(generator: NameGenerator, make_profile: ProfileFactory) -> None:
     profile = make_profile(
         replacement_rules = {
             'аа': 'а',
@@ -75,7 +75,7 @@ def test_has_forbidden_combination(
     make_profile: ProfileFactory,
     name: str,
     expected: bool
-):
+) -> None:
     profile = make_profile(
         forbidden_combinations = [
             'бв',
@@ -101,7 +101,7 @@ def test_maybe_add_apostrophe(
     name: str,
     random_value: float,
     expected: str
-):
+) -> None:
     profile = make_profile(
         apostrophe_chance = 0.5
     )
@@ -170,7 +170,7 @@ def test_generate_unique_names_are_scoped_by_key(
     monkeypatch: pytest.MonkeyPatch,
     generator: NameGenerator,
     make_profile: ProfileFactory
-):
+) -> None:
     names = iter([
         'эль', # первое наименование
         'эль', # дубликат

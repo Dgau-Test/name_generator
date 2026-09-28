@@ -2,8 +2,8 @@ from collections.abc import Callable
 
 import pytest
 
-from name_generator import CultureNameGenerator, NameGenerator
-from name_generator.models import Culture, NameProfile
+from name_generator import NameGenerator
+from name_generator.models import NameProfile
 from name_generator.name_profiles import RussianNameProfile
 
 ProfileFactory = Callable[..., NameProfile]
@@ -28,8 +28,3 @@ def make_profile() -> ProfileFactory:
         return RussianNameProfile(**(defaults | kwargs))
 
     return _make_profile
-
-
-@pytest.fixture
-def culture_generator(culture: Culture) -> CultureNameGenerator:
-    return CultureNameGenerator(culture)

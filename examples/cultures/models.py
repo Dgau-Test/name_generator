@@ -1,6 +1,10 @@
 from dataclasses import dataclass
-from name_generator.models.name_profile import NameProfile
-from name_generator.models.gender import Gender
+from name_generator.models import NameProfile
+
+@dataclass
+class Gender[T]:
+    male: T
+    female: T
 
 
 @dataclass
@@ -11,3 +15,4 @@ class Culture:
 
     cities: NameProfile
     countries: NameProfile
+

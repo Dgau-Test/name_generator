@@ -1,3 +1,3 @@
-from name_generator.generators import NameGenerator, CultureNameGenerator
+from name_generator.generators import NameGenerator
 
-__all__ = ('NameGenerator', 'CultureNameGenerator')
+__all__ = ('NameGenerator',)

@@ -1,19 +1,20 @@
 from importlib import import_module
 from typing import TYPE_CHECKING
 
+from cultures.generator import CultureNameGenerator
 
 if TYPE_CHECKING:
-    from name_generator.cultures.elf import ELF
-    from name_generator.cultures.orc import ORC
-    from name_generator.cultures.human import HUMAN
+    from cultures.elf import ELF
+    from cultures.human import HUMAN
+    from cultures.orc import ORC
 
 
-__all__ = ('ELF', 'ORC', 'HUMAN')
+__all__ = ('ELF', 'ORC', 'HUMAN', 'CultureNameGenerator')
 
 _LAZY_IMPORTS = {
-    'ELF': 'name_generator.cultures.elf',
-    'ORC': 'name_generator.cultures.orc',
-    'HUMAN': 'name_generator.cultures.human'
+    'ELF': 'cultures.elf',
+    'ORC': 'cultures.orc',
+    'HUMAN': 'cultures.human'
 }
 
 
