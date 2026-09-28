@@ -1,7 +1,6 @@
 """Пример генерации эльфийских имён и др. наименований."""
 
-from cultures import ELF
-from cultures.generator import CultureNameGenerator
+from cultures import ELF, CultureNameGenerator
 
 generator = CultureNameGenerator(ELF)
 

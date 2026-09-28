@@ -7,3 +7,9 @@ from name_generator.models import WeightedValue
 def test_weighted_value_rejects_non_positive_weight(weight: float) -> None:
     with pytest.raises(ValueError, match='weight должен быть > 0'):
         WeightedValue('эль', weight)
+
+
+def test_weighted_value_accepts_positive_weight() -> None:
+    value = WeightedValue('эль', 0.1)
+
+    assert value.weight == 0.1

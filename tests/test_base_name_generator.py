@@ -133,6 +133,51 @@ def test_generate(
     assert 'Эларион' == generator.generate(profile)
 
 
+@pytest.mark.parametrize(
+    ('name', 'expected'),
+    [
+        ('ари', True),
+        ('аэри', True),
+        ('ааари', False),
+        ('АААри', False),
+    ],
+)
+def test_valid_vowels(
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+    name: str,
+    expected: bool,
+) -> None:
+    profile = make_profile(max_vowels_in_row=2)
+
+    assert generator._valid_vowels(name, profile) is expected
+
+
+@pytest.mark.parametrize(
+    ('name', 'expected'),
+    [
+        ('Арин', True),
+        ('Ар', False),
+        ('Арбвг', False),
+        ('Аргз', False),
+    ],
+)
+def test_valid(
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+    name: str,
+    expected: bool,
+) -> None:
+    profile = make_profile(
+        min_length=3,
+        max_length=6,
+        max_consonants_in_row=2,
+        forbidden_combinations=['гз'],
+    )
+
+    assert generator._valid(name, profile) is expected
+
+
 def test_generate_raises_error_when_generation_fails(
     monkeypatch: pytest.MonkeyPatch,
     generator: NameGenerator,
@@ -187,3 +232,32 @@ def test_generate_unique_names_are_scoped_by_key(
     assert first == 'Эль'
     assert second == 'Ари'
     assert city == 'Эль'
+
+
+def test_generate_allows_duplicates_when_unique_is_false(
+    monkeypatch: pytest.MonkeyPatch,
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+) -> None:
+    profile = make_profile()
+
+    monkeypatch.setattr(generator, '_build', lambda profile: 'эль')
+
+    first = generator.generate(profile)
+    second = generator.generate(profile)
+
+    assert first == second == 'Эль'
+
+
+def test_build(
+    generator: NameGenerator,
+    make_profile: ProfileFactory,
+) -> None:
+    profile = make_profile(
+        patterns=[WeightedValue('CVE')],
+        consonants=[WeightedValue('к')],
+        vowels=[WeightedValue('а')],
+        end_syllables=[WeightedValue('рон')],
+    )
+
+    assert generator._build(profile) == 'карон'
