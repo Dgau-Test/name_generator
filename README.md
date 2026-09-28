@@ -178,7 +178,7 @@ from name_generator.models import EnglishNameProfile, RussianNameProfile
 Например:
 
 ```python
-patterns=[
+patterns = [
     WeightedValue('SE', 5),
     WeightedValue('SME', 3),
     WeightedValue('KVE', 1),
@@ -280,7 +280,7 @@ profile = RussianNameProfile(
 Значение задаётся в диапазоне от `0.0` до `1.0`.
 
 ```python
-apostrophe_chance=0.05
+apostrophe_chance = 0.05
 ```
 
 соответствует вероятности `5%`.
