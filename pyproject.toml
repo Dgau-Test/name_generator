@@ -1,10 +1,18 @@
 [project]
 name = "name-generator"
 version = "0.1.0"
-description = "Fantasy name generator"
+description = "Configurable procedural name generator"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+license = "MIT"
+
+authors = [
+    { name = "Артем Вакуленко" },
+]
+
+[project.urls]
+Repository = "https://github.com/Dgau-glitch/name_generator"
 
 [build-system]
 requires = ["hatchling"]

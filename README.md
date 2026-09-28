@@ -408,4 +408,4 @@ uv run flake8 .
 
 ## Автор
 
-Артём Вакуленко — [Dgau-glitch](https://github.com/Dgau-glitch)
+Артем Вакуленко — [Dgau-glitch](https://github.com/Dgau-glitch)
